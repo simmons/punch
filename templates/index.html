@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" href="static/favicon.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="static/icon-128.png">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="static/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <!-- -->
+    <link rel="stylesheet" href="static/index.css">
+    <title>Punch</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Punch</a>
+      <!--
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse" id="collapsingNavbar">
+      -->
+      <div class="ml-auto">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+                  {{ username }}
+              </a>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/logout">Sign off</a>
+              </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <!-- error message -->
+      {% match error_message %}
+        {% when Some with (error) %}
+          <div class="alert alert-danger" role="alert">
+            <strong>Error:</strong> {{ error }}
+          </div>
+        {% when None %}
+      {% endmatch %}
+
+      {% match report %}
+        {% when Some with (report) %}
+
+          {% match report.next_direction %}
+          {% when PunchDirection::In %}
+            <p>
+              <form action="/punch" method="POST">
+                <input type="hidden" name="direction" value="In">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Punch In</button>
+              </form>
+            </p>
+          {% when PunchDirection::Out %}
+            <p>
+              <form action="/punch" method="POST">
+                <input type="hidden" name="direction" value="Out">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Punch Out</button>
+              </form>
+            </p>
+          {% endmatch %}
+
+          <h4>Recent day totals</h4>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Day</th>
+                <th scope="col">Gross time</th>
+                <th scope="col">Net time</th>
+              </tr>
+            </thead>
+            {% for day in report.days %}
+            <tr>
+              <td>{{ day.0 }}</td>
+              <td>{{ day.1.gross }}</td>
+              <td>{{ day.1.net }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+
+          <h4>Recent week totals</h4>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Week</th>
+                <th scope="col">Gross time</th>
+                <th scope="col">Net time</th>
+              </tr>
+            </thead>
+            {% for week in report.weeks %}
+            <tr>
+              <td>{{ week.0 }}</td>
+              <td>{{ week.1.gross }}</td>
+              <td>{{ week.1.net }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+
+
+        {% when None %}
+          <div class="alert alert-danger" role="alert">
+            <strong>Error: </strong> Could not generate report.  See server logs.
+          </div>
+      {% endmatch %}
+    </div>
+
+    <!-- jQuery, Popper, Bootstrap JS -->
+    <script src="static/jquery-3.3.1.slim.min.js"></script>
+    <script src="static/popper.min.js"></script>
+    <script src="static/bootstrap.min.js"></script>
+  </body>
+</html>

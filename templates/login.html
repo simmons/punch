@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" href="static/favicon.png">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="static/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <!-- -->
+    <link rel="stylesheet" href="static/index.css">
+    <title>Punch</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Punch</a>
+      <!-- no username yet
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse" id="collapsingNavbar">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+          </li>
+        </ul>
+      </div>
+      -->
+    </nav>
+
+    <div class="container-fluid">
+      <!-- error message -->
+      {% match error_message %}
+        {% when Some with (error) %}
+          <div class="alert alert-danger" role="alert">
+            <strong>Error:</strong> {{ error }}
+          </div>
+        {% when None %}
+      {% endmatch %}
+
+      <form class="form-signin" action="/login" method="POST">
+        <img class="mb-4 d-block mx-auto" src="static/clock.svg" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+
+        <label for="inputUsername" class="sr-only">Email address</label>
+        <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required autofocus>
+
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+
+<!--
+        <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+-->
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+<!--
+        <p class="mt-5 mb-3 text-muted">&copy; 2018 David Simmons</p>
+-->
+      </form>
+    </div>
+
+    <!-- jQuery, Popper, Bootstrap JS -->
+    <script src="static/jquery-3.3.1.slim.min.js"></script>
+    <script src="static/popper.min.js"></script>
+    <script src="static/bootstrap.min.js"></script>
+  </body>
+</html>
